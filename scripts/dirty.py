@@ -11,21 +11,36 @@ def make_dirty(vals):
 	for v in vals:
 		ind = int(np.random.randint(0, len(v)-1))
 		if v[ind].isnumeric():
-			v[ind] = dirty_numeric(v[ind])
+			val = to_numeric(v[ind])
+			v[ind] = dirty_numeric(val)
 		else:
 			v[ind] = dirty_categorical(v[ind])
 		v[-1] = 1
 		dirty.append(v)
 	return dirty
 
+# Convert numeric string to int or float based on value
+def to_numeric(v):
+	a = int(v)
+	b = float(v)
+	if a == b:
+		return int(v)
+	else:
+		return float(v)
+
 # Randomly negate or scale number by factor of 10
 def dirty_numeric(val):
+	print('val',val)
 	i = np.random.randint(0,3)
+	print('i:', i)
+	# Negate value
 	if i == 0:
-		return val*-1
-	elif val == 1:
-		return val*10
-	elif val == 2:
+		return -1*val
+	# Multiply value by 10
+	elif i == 1:
+		return 10*val
+	# Divide value by 10
+	elif i == 2:
 		return int(val/10)
 
 # Randomly change character, swap characters or insert character
@@ -57,8 +72,12 @@ def main(args):
 	infile = args.infile
 	out = args.out
 	perc = args.percent
+	head = args.header
 
 	data = [l.rstrip('\n').split(',') for l in open(infile, 'r').readlines()]
+	if head:
+		headers = data[0]
+		data = data[1:]
 	split_index = int(len(data)*(perc/100))
 	clean = data[:-split_index]
 	dirty = data[-split_index:]
@@ -68,6 +87,8 @@ def main(args):
 	with open(out, 'w') as f:
 		writer = csv.writer(f, delimiter=',')
 		# f_name, l_name, email, age, salary, height, interest, country, clean/dirty
+		if head:
+			writer.writerow(headers)
 		writer.writerows(clean)
 		writer.writerows(dirty)
 
@@ -77,4 +98,5 @@ if __name__ == "__main__":
 	ap.add_argument('--infile', '-i', type=str, required=True)
 	ap.add_argument('--out', '-o', type=str, required=True)
 	ap.add_argument('--percent', '-p', type=int, required=True)
+	ap.add_argument('--header', '-head', type=bool, default=True)
 	main(ap.parse_args())

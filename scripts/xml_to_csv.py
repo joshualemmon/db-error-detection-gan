@@ -88,6 +88,7 @@ def main(args):
 	with open(out, 'w') as f:
 		writer = csv.writer(f, delimiter=',')
 		# f_name, l_name, email, age, salary, height, interest, country, clean/dirty
+		writer.writerow(['l_name', 'email', 'f_name', 'age', 'salary', 'height', 'interest', 'country', 'is_dirty'])
 		writer.writerows(full_data)
 
 if __name__ == '__main__':
