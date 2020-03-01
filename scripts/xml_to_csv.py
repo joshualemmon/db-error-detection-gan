@@ -10,12 +10,14 @@ def get_xml_vals(infile):
 	root = tree.getroot()
 	item = ""
 	attr = []
+	# Get attribute names
 	for r in root:
 		item = r.tag
 		for c in r:
 			attr.append(c.tag)
 	attr = set(attr)
 
+	# Get attribute values for each item
 	vals = []
 	for p in list(root):
 		v = []
@@ -27,14 +29,17 @@ def get_xml_vals(infile):
 
 def add_attributes(xml_data):
 	data = []
+	# Load possible interests and countries
 	interests = [i.rstrip('\n') for i in open('interests.txt', 'r').readlines()]
 	countries = [c.rstrip('\n') for c in open('countries.txt', 'r').readlines()]
+	# Generate random valid values for each tuple
 	for x in xml_data:
 		x.append(gen_age())
 		x.append(gen_salary())
 		x.append(gen_height())
 		x.append(gen_interest(interests))
 		x.append(gen_country(countries))
+		x.append(0)
 		data.append(x)
 	return data
 
@@ -75,14 +80,14 @@ def main(args):
 	infile = args.infile
 	out = args.out
 
+	# Read XML data
 	xml_data = get_xml_vals(infile)
 
 	full_data = add_attributes(xml_data)
 
 	with open(out, 'w') as f:
 		writer = csv.writer(f, delimiter=',')
-		writer.writerow()
-		# f_name, l_name, email, age, salary, height, interest, country
+		# f_name, l_name, email, age, salary, height, interest, country, clean/dirty
 		writer.writerows(full_data)
 
 if __name__ == '__main__':
