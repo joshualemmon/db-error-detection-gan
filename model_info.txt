@@ -1,0 +1,36 @@
+Person:
+	Generator:
+		- layer_size = 64
+		- gen_size = 8
+		- tanh act
+		- binary ce
+		- adam opt
+	Discriminator:
+		- layer_size = 128
+		- sig act
+		- binary ce
+		- adam opt
+Titanic:
+	Generator:
+		- layer_size = 64
+		- gen_size = 12
+		- tanh act
+		- binary ce
+		- adam opt
+	Discriminator:
+		- layer_size = 128
+		- sig act
+		- binary ce
+		- adam opt
+CC:
+	Generator:
+		- layer_size = 64
+		- gen_size = 8
+		- tanh act
+		- binary ce
+		- adam opt
+	Discriminator:
+		- layer_size = 128
+		- sig act
+		- binary ce
+		- adam opt
