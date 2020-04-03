@@ -3,6 +3,7 @@ import argparse
 from string import ascii_letters
 import csv
 import random
+<
 import pandas as pd
 
 ascii_letters = ascii_letters[:26]
@@ -95,7 +96,6 @@ def main(args):
 		if head:
 			headers = data[0]
 			data = data[1:]
-
 	split_index = int(len(data)*(perc/100))
 	clean = data[:-split_index]
 	dirty = data[-split_index:]
